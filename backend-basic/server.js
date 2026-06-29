@@ -5,6 +5,8 @@ const cors = require('cors');
 
 const app = express();
 
+const { saveHistory } = require('./db');
+
 let searchHistory = [];
 
 function updateHistory(city) {
@@ -13,7 +15,7 @@ function updateHistory(city) {
     const formatCity = normalizedCity.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ') // Format city name to Title Case;
 
-    const filteredHistory = searchHistory.filter(item => item.trim().toLowerCase() !== normalizedCity);
+    const filteredHistory = saveHistory.filter(item => item.trim().toLowerCase() !== normalizedCity);
     
     return [formatCity, ...filteredHistory].slice(0, 5); // Add new city to the beginning and limit history to 5 items
 }
@@ -58,7 +60,7 @@ app.get('/weather/:city',  async (req, res) => {
         };
 
         // Add city to search history
-        searchHistory = updateHistory(weatherData.city);
+        await saveHistory(weatherData.city);
 
         res.json(weatherData);
     } catch (error) {
