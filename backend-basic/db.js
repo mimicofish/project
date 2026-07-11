@@ -19,6 +19,12 @@ async function saveHistory(city) {
     )
 }
 
+async function clearHistory() {
+    await pool.query(
+        "DELETE FROM history"
+    )
+}
+
 async function testDB() {
     const result = await pool.query("SELECT * FROM history");
 
@@ -28,5 +34,7 @@ async function testDB() {
 testDB();
 
 module.exports = {
-    saveHistory
+    pool,
+    saveHistory, 
+    clearHistory
 };

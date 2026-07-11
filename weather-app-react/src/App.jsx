@@ -39,7 +39,7 @@ function App() {
       const response = await fetch('http://localhost:3000/history');
       const result = await response.json();
       
-      setHistory(result.history);
+      setHistory(result);
 
     } catch (error) {
       setError('Failed to fetch history');
@@ -79,12 +79,12 @@ function App() {
         <div>
           <h3>Search History</h3>
           <ul>
-            {history.map((item, index) => (
-              <li key={index} onClick={() => {
-                setCity(item);
-                fetchData(item);
+            {history.map((item) => (
+              <li key={item.id} onClick={() => {
+                setCity(item.city);
+                fetchData(item.city);
               }}>
-                {item}
+                {item.city}
               </li>
             ))}
           </ul>
