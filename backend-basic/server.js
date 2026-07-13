@@ -58,9 +58,17 @@ app.get('/weather/:city',  async (req, res) => {
 });
 
 app.get('/history', async (req, res) => {
-    const history = await getHistory();
+    try {
+        const history = await getHistory();
     
-    res.json(history);
+        res.json(history);
+    } catch (error) {
+        console.error(error);
+
+        res.status(500).json({
+            message: 'Server error'
+        });
+    }
 });
 
 app.delete('/history', async (req, res) => {
