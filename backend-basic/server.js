@@ -7,7 +7,7 @@ const app = express();
 
 const { saveHistory, clearHistory } = require('./db');
 
-const { getHistory } = require('./services/historyService');
+const { getHistory, deleteHistory } = require('./services/historyService');
 
 const { formatCity } = require('./utils');
 
@@ -77,6 +77,23 @@ app.delete('/history', async (req, res) => {
         message: 'Search history cleared'
     });
 });
+
+app.delete('/history/:id', async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        const deletedHistory = await deleteHistory(id);
+
+        res.status(200).json({
+            message: 'Delete successfully'
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: 'Server error'
+        });
+    }
+})
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
