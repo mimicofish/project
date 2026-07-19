@@ -7,10 +7,12 @@ async function getHistory() {
 }
 
 async function deleteHistory(id) {
-    await pool.query(
+    const result = await pool.query(
         'DELETE FROM history WHERE id = $1',
         [id]
-    )
+    );
+
+    return result.rowCount;
 }
 
 module.exports = {

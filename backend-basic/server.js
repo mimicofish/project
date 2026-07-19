@@ -82,9 +82,14 @@ app.delete('/history/:id', async (req, res) => {
     const id = req.params.id;
 
     try {
-        const deletedHistory = await deleteHistory(id);
+        const deletedCount = await deleteHistory(id);
+        if (deletedCount === 0) {
+            return res.status(404).json({
+                message: 'Not Found'
+            });
+        }
 
-        res.status(200).json({
+        return res.status(200).json({
             message: 'Delete successfully'
         });
     } catch (error) {
