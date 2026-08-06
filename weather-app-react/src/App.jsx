@@ -57,6 +57,26 @@ function App() {
     }
   }
 
+  async function handleDelete(id) {
+    try {
+      const response = await fetch(`/history/${id}`, {
+        method: 'DELETE'
+      });
+
+      if (!response.ok) {
+        throw new Error('Something wrong')
+      };
+
+      const filteredHistory = history.filter((item) => {
+        return item.id !== id;
+      });
+
+      setHistory(filteredHistory);
+    } catch (error) {
+        console.log('Failed to delete', error.message);
+    }
+  }
+
   return (
     <div>
       <input 
@@ -85,6 +105,10 @@ function App() {
                 fetchData(item.city);
               }}>
                 {item.city}
+                <button onClick={(event) => {
+                  event.stopPropagation();
+                  handleDelete(item.id);
+                }}>🗑</button>
               </li>
             ))}
           </ul>
