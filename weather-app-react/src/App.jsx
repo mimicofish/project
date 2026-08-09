@@ -90,7 +90,9 @@ function App() {
           }
         }} 
       />
-      <button onClick={fetchData}>
+      <button onClick={() => {
+        fetchData(city);
+        }}>
         Search
       </button>
       
