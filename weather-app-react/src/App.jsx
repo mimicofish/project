@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
-import './App.css'
+import { useState, useEffect } from 'react';
+import './App.css';
+import { deleteHistory, getHistory } from './services/historyService';
 
 function App() {
   const [data, setData] = useState(null);
@@ -36,8 +37,7 @@ function App() {
 
   async function fetchHistory() {
     try {
-      const response = await fetch('http://localhost:3000/history');
-      const result = await response.json();
+      const result = await getHistory();
       
       setHistory(result);
 
@@ -59,13 +59,7 @@ function App() {
 
   async function handleDelete(id) {
     try {
-      const response = await fetch(`/history/${id}`, {
-        method: 'DELETE'
-      });
-
-      if (!response.ok) {
-        throw new Error('Something wrong')
-      };
+      await deleteHistory(id);
 
       const filteredHistory = history.filter((item) => {
         return item.id !== id;

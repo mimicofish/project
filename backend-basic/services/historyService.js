@@ -7,6 +7,7 @@ async function getHistory() {
 }
 
 async function deleteHistory(id) {
+    console.log('DELETE received:', Date.now());
     const result = await pool.query(
         'DELETE FROM history WHERE id = $1',
         [id]
