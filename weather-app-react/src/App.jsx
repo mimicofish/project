@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import { deleteHistory, getHistory } from './services/historyService';
+import { deleteHistory, getHistory } from '../services/historyService';
 
 function App() {
   const [data, setData] = useState(null);
@@ -8,6 +8,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [history, setHistory] = useState([]);
+  const [deletingId, setDeletingId] = useState(null);
 
   useEffect(() => {
     fetchHistory();
@@ -58,6 +59,8 @@ function App() {
   }
 
   async function handleDelete(id) {
+    setDeletingId(id);
+
     try {
       await deleteHistory(id);
 
@@ -68,6 +71,8 @@ function App() {
       setHistory(filteredHistory);
     } catch (error) {
         console.log('Failed to delete', error.message);
+    } finally {
+      setDeletingId(null);
     }
   }
 
@@ -104,7 +109,9 @@ function App() {
                 <button onClick={(event) => {
                   event.stopPropagation();
                   handleDelete(item.id);
-                }}>🗑</button>
+                }} disabled={item.id === deletingId}>
+                    {item.id === deletingId ? 'Deleting...' : '🗑'}
+                </button>
               </li>
             ))}
           </ul>
