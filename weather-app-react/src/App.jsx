@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 import { deleteHistory, getHistory } from '../services/historyService';
+import { getWeather } from '../services/weatherService';
 
 function App() {
   const [data, setData] = useState(null);
@@ -18,13 +19,8 @@ function App() {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch(`http://localhost:3000/weather/${cityName || city}`);
 
-      if (!response.ok) {
-        throw new Error('City not found');
-      }
-
-      const result = await response.json();
+      const result = await getWeather(cityName);
       setData(result);
       await fetchHistory(); // Fetch history after getting new data
 
