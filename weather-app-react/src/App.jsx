@@ -25,7 +25,12 @@ function App() {
       await fetchHistory(); // Fetch history after getting new data
 
     } catch (error) {
-      setError(error.message);
+      if (error.status === 404) {
+        setError(error.message);
+      } else {
+        setError('Something wrong');
+      }
+      
       setData(null);
     } finally {
       setLoading(false);
@@ -45,7 +50,7 @@ function App() {
 
   async function clearHistory() {
     try {
-      await fetch('http://localhost:3000/history', {
+      await fetch('/history', {
         method: 'DELETE'
       });
       setHistory([]);
@@ -87,8 +92,8 @@ function App() {
       />
       <button onClick={() => {
         fetchData(city);
-        }}>
-        Search
+        }} disabled={loading}>
+        {loading ? 'Searching' : 'Search'}
       </button>
       
 

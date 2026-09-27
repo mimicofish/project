@@ -2,7 +2,11 @@ async function getWeather(cityName) {
     const response = await fetch(`/weather/${cityName}`);
 
     if (!response.ok) {
-        throw new Error('City not found');
+        const error = new Error('City not found');
+
+        error.status = response.status;
+
+        throw error;
     }
 
     return await response.json();
