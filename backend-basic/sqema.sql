@@ -1,0 +1,5 @@
+CREATE TABLE history (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    city TEXT,
+    created_at TIMESTAMP
+);
